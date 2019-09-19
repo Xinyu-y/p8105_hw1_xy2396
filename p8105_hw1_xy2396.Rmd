@@ -1,0 +1,104 @@
+---
+title: "P8105 HW1"
+output: html_document
+---
+This is the R Markdown for P8150 Homework 1   
+<br>
+
+## Problem 1
+<br>
+**Create data frame**
+```{r}
+
+library(tidyverse)
+
+p1_df = tibble(
+  ran_sample = rnorm(8),
+  vec_char = character(8),
+  vec_logical = ran_sample > 0,
+  vec_factor = factor(levels = c("level1", "level2", "level3"), length(8))
+)
+
+```
+<br> 
+
+**Compute mean for each variable in data frame**
+```{r}
+
+mean(pull(p1_df, ran_sample))
+mean(pull(p1_df, vec_char))
+mean(pull(p1_df, vec_logical))
+mean(pull(p1_df, vec_factor))
+
+```
+As seen above, among the 4 variables, mean can be computed for the random sample and the logical vector, but cannot be computed for the character or factor vector.  
+<br>   
+
+**Apply as.numeric and convert**
+```{r, results = 'hide'}
+
+as.numeric(pull(p1_df, vec_char))
+as.numeric(pull(p1_df, vec_logical))
+as.numeric(pull(p1_df, vec_factor))
+
+```
+When 'as.numeric' is applied, character vector and factor vector showed 'NA' while logical vector showed '0' or '1'. This indicates that logical vector can be treated as numeric, which helps explain why logical vector can be used to compute mean while the other two can't.   
+```{r}
+
+convert_1 = as.numeric(pull(p1_df, vec_logical))
+convert_1 * pull(p1_df, ran_sample)
+convert_2 = as.factor(pull(p1_df, vec_logical))
+convert_2 * pull(p1_df, ran_sample)
+convert_3 = as.factor(pull(p1_df, vec_logical))
+convert_3 = as.numeric(convert_3)
+convert_3 * pull(p1_df, ran_sample)
+
+```
+---
+
+## Problem 2
+<br>
+**Create data frame**
+```{r}
+
+p2_df = tibble(
+  x = rnorm(500),
+  y = rnorm(500),
+  z_logic = (x + y > 1),
+  z_numeric = as.numeric(z_logic),
+  z = as.factor(z_numeric)
+)
+
+```
+* The dataset contains `r nrow(p2_df)` rows and `r ncol(p2_df)` columns.  
+* The mean of sample x is `r round(mean(pull(p2_df, x)), digit=2)`, the median is `r round(median(pull(p2_df, x)), digit=2)`, and the standard deviation is `r round(sd(pull(p2_df, x)), digit=2)`
+* `r sum(pull(p2_df, z_numeric)) * 100 / nrow(p2_df)`% of sample x satisfy that x + y > 1  
+
+<br>
+
+**Scatterplots of Y vs X**  
+
+Scatterplot 1: group by logical variable (see below)
+```{r}
+
+ggplot(p2_df, aes(x = x, y = y, color = z_logic)) + geom_point()
+ggsave("scatter_plot.pdf", height = 4, width = 6)
+
+```
+  
+  Scatterplot 2: group by numeric variable (see below)
+```{r}
+
+ggplot(p2_df, aes(x = x, y = y, color = z_numeric)) + geom_point()
+
+```
+  
+  Scatterplot 3: group by factor variable (see below)
+```{r}
+
+ggplot(p2_df, aes(x = x, y = y, color = z)) + geom_point()
+
+```
+  
+
+  
