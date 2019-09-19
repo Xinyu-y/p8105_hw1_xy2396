@@ -1,13 +1,14 @@
 ---
 title: "P8105 HW1"
-output: html_document
+output: github_document
+author: Xinyu Yang
 ---
 This is the R Markdown for P8150 Homework 1   
 <br>
 
 ## Problem 1
 <br>
-**Create data frame**
+**Create data frame and load pakage**
 ```{r}
 
 library(tidyverse)
@@ -71,29 +72,31 @@ p2_df = tibble(
 
 ```
 * The dataset contains `r nrow(p2_df)` rows and `r ncol(p2_df)` columns.  
-* The mean of sample x is `r round(mean(pull(p2_df, x)), digit=2)`, the median is `r round(median(pull(p2_df, x)), digit=2)`, and the standard deviation is `r round(sd(pull(p2_df, x)), digit=2)`
+* For sample x, the mean is `r round(mean(pull(p2_df, x)), digit=2)`, the median is `r round(median(pull(p2_df, x)), digit=2)`, and the standard deviation is `r round(sd(pull(p2_df, x)), digit=2)`
 * `r sum(pull(p2_df, z_numeric)) * 100 / nrow(p2_df)`% of sample x satisfy that x + y > 1  
 
 <br>
 
 **Scatterplots of Y vs X**  
 
-Scatterplot 1: group by logical variable (see below)
+_Scatterplot 1_: group by logical variable (see below)
 ```{r}
 
 ggplot(p2_df, aes(x = x, y = y, color = z_logic)) + geom_point()
 ggsave("scatter_plot.pdf", height = 4, width = 6)
 
 ```
-  
-  Scatterplot 2: group by numeric variable (see below)
+
+<br>
+  _Scatterplot 2_: group by numeric variable (see below)
 ```{r}
 
 ggplot(p2_df, aes(x = x, y = y, color = z_numeric)) + geom_point()
 
 ```
-  
-  Scatterplot 3: group by factor variable (see below)
+
+<br>
+  _Scatterplot 3_: group by factor variable (see below)
 ```{r}
 
 ggplot(p2_df, aes(x = x, y = y, color = z)) + geom_point()
